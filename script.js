@@ -10,54 +10,11 @@
   /* ----------------------------------------------------------
      1. DOMAIN + EMAIL SETUP
      ---------------------------------------------------------- */
-  const host  = (location.hostname || '').replace(/^www\./, '') || 'domain.com';
-  const email = 'contact@' + host;
-
-  document.getElementById('domainName').textContent = host;
-  document.getElementById('year').textContent       = new Date().getFullYear();
-
-  const mailBtn = document.getElementById('mailBtn');
-  mailBtn.href =
-    'mailto:' + email +
-    '?subject=' + encodeURIComponent('Inquiry about ' + host) +
-    '&body='    + encodeURIComponent(
-      'Hi Dipen,\n\nI noticed you own ' + host + '.\n\n'
-    );
 
   /* ----------------------------------------------------------
      2. COPY EMAIL + TOAST
      ---------------------------------------------------------- */
-  const copyBtn = document.getElementById('copyBtn');
-  const toast   = document.getElementById('toast');
-  let toastTimer;
-
-  function showToast(msg) {
-    toast.textContent = msg;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
-  }
-
-  copyBtn.addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText(email);
-      showToast('Copied: ' + email);
-    } catch (err) {
-      const ta = document.createElement('textarea');
-      ta.value = email;
-      ta.style.position = 'fixed';
-      ta.style.opacity  = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try {
-        document.execCommand('copy');
-        showToast('Copied: ' + email);
-      } catch (e) {
-        showToast(email);
-      }
-      document.body.removeChild(ta);
-    }
-  });
+ 
 
   /* ----------------------------------------------------------
      3. TYPEWRITER EFFECT
