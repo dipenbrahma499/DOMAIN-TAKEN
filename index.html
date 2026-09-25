@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Domain Taken — by Dipen</title>
+<meta name="description" content="This domain is registered and maintained by Dipen.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="orb a" aria-hidden="true"></div>
+<div class="orb b" aria-hidden="true"></div>
+<div class="orb c" aria-hidden="true"></div>
+
+<main class="card">
+
+  <!-- Lock badge -->
+  <div class="lock" aria-hidden="true">
+    <span class="ring"></span>
+    <span class="ring r2"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"
+         stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="10.5" width="16" height="10.5" rx="2.5"/>
+      <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>
+      <circle cx="12" cy="15.7" r="1.15" fill="currentColor" stroke="none"/>
+    </svg>
+  </div>
+
+  <span class="eyebrow">Status · Registered</span>
+
+  <h1>This Domain Is Taken</h1>
+
+  <div class="domain">
+    <span class="dot" aria-hidden="true"></span>
+    <span id="domainName">domain.com</span>
+  </div>
+
+  <p class="typing" id="typing" aria-live="polite"></p>
+
+  <div class="actions">
+    <a class="btn primary" id="mailBtn" href="#">
+      <svg viewBox="0 0 24 24">
+        <path d="M3 6.5h18v11H3z"/>
+        <path d="m3 7 9 6 9-6"/>
+      </svg>
+      Contact Owner
+    </a>
+
+    <button class="btn ghost" id="copyBtn" type="button">
+      <svg viewBox="0 0 24 24">
+        <rect x="9" y="9" width="11" height="11" rx="2"/>
+        <path d="M5 15V5a2 2 0 0 1 2-2h8"/>
+      </svg>
+      Copy Email
+    </button>
+  </div>
+
+  <div class="foot">
+    Registered &amp; maintained by <strong>Dipen</strong>
+    <span class="sep">•</span>
+    © <span id="year">2025</span>
+  </div>
+
+</main>
+
+<div class="toast" id="toast">Email copied to clipboard</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+
+<style>
+  /* ============================================================
+   RESET & VARIABLES
+   ============================================================ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #070b18;
+  --accent: #5eead4;
+  --accent2: #818cf8;
+  --text: #e8eeff;
+  --muted: #8b96b8;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+               Roboto, Inter, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 18% 8%,  #14204a 0%, transparent 55%),
+    radial-gradient(circle at 85% 92%, #2a1a45 0%, transparent 55%),
+    var(--bg);
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  overflow: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   BACKGROUND — CANVAS + GLOW ORBS
+   ============================================================ */
+#bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+}
+
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: .35;
+  z-index: 1;
+  pointer-events: none;
+  animation: float 14s ease-in-out infinite;
+}
+
+.orb.a { width: 340px; height: 340px; background: #2563eb; top: -90px;  left: -90px; }
+.orb.b { width: 300px; height: 300px; background: #7c3aed; bottom: -100px; right: -80px; animation-delay: -6s; }
+.orb.c { width: 220px; height: 220px; background: #0d9488; top: 45%; left: 65%; animation-delay: -3s; opacity: .22; }
+
+@keyframes float {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(30px, -40px, 0) scale(1.12); }
+}
+
+/* ============================================================
+   GLASS CARD
+   ============================================================ */
+.card {
+  position: relative;
+  z-index: 2;
+  width: min(660px, 100%);
+  padding: clamp(28px, 5vw, 54px) clamp(22px, 4vw, 48px);
+  text-align: center;
+  border-radius: 30px;
+  background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.1);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  box-shadow:
+    0 40px 90px -30px rgba(0,0,0,.9),
+    0 0 0 1px rgba(255,255,255,.03) inset,
+    0 1px 0 rgba(255,255,255,.09) inset;
+  animation: rise .9s cubic-bezier(.2,.85,.25,1) both;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(26px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);   }
+}
+
+/* ============================================================
+   LOCK BADGE
+   ============================================================ */
+.lock {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(94,234,212,.18), rgba(129,140,248,.18));
+  border: 1px solid rgba(94,234,212,.35);
+  box-shadow:
+    0 0 40px -6px rgba(94,234,212,.45),
+    inset 0 0 22px rgba(129,140,248,.2);
+}
+
+.lock svg {
+  width: 38px;
+  height: 38px;
+  stroke: var(--accent);
+  filter: drop-shadow(0 0 8px rgba(94,234,212,.7));
+}
+
+.ring {
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  border: 1px solid rgba(94,234,212,.55);
+  animation: pulse 3s ease-out infinite;
+}
+
+.ring.r2 {
+  animation-delay: 1.5s;
+  border-color: rgba(129,140,248,.5);
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1);    opacity: .8; }
+  100% { transform: scale(1.85); opacity: 0;  }
+}
+
+/* ============================================================
+   TEXT
+   ============================================================ */
+.eyebrow {
+  display: inline-block;
+  font-size: .72rem;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 7px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(94,234,212,.3);
+  background: rgba(94,234,212,.07);
+  margin-bottom: 22px;
+}
+
+h1 {
+  font-size: clamp(2.1rem, 7vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -.03em;
+  font-weight: 800;
+  background: linear-gradient(100deg, #ffffff 10%, #a5f3ec 45%, #a5b4fc 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 16px;
+}
+
+.domain {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: clamp(.85rem, 2.6vw, 1.05rem);
+  color: #cfe0ff;
+  padding: 11px 20px;
+  border-radius: 14px;
+  background: rgba(8,14,32,.65);
+  border: 1px solid rgba(129,140,248,.28);
+  box-shadow: 0 0 26px -8px rgba(129,140,248,.6) inset;
+  margin-bottom: 24px;
+  word-break: break-all;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 10px #34d399;
+  animation: blink 1.8s ease-in-out infinite;
+  flex: 0 0 auto;
+}
+
+@keyframes blink {
+  50% { opacity: .25; }
+}
+
+.typing {
+  min-height: 1.7em;
+  font-size: clamp(.95rem, 2.8vw, 1.1rem);
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 34px;
+}
+
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  background: var(--accent);
+  vertical-align: -.18em;
+  margin-left: 3px;
+  animation: caret .9s steps(1) infinite;
+}
+
+@keyframes caret {
+  50% { opacity: 0; }
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin-bottom: 34px;
+}
+
+.btn {
+  font: inherit;
+  font-weight: 600;
+  font-size: .94rem;
+  padding: 14px 28px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  white-space: nowrap;
+  transition:
+    transform .22s cubic-bezier(.2,.8,.2,1),
+    box-shadow .22s,
+    background .22s,
+    border-color .22s;
+}
+
+.btn svg {
+  width: 17px;
+  height: 17px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.btn.primary {
+  color: #04121a;
+  background: linear-gradient(135deg, #5eead4, #7dd3fc 55%, #a5b4fc);
+  box-shadow: 0 14px 34px -12px rgba(94,234,212,.85);
+}
+
+.btn.primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 42px -12px rgba(94,234,212,1);
+}
+
+.btn.ghost {
+  color: var(--text);
+  background: rgba(255,255,255,.05);
+  border-color: rgba(255,255,255,.14);
+}
+
+.btn.ghost:hover {
+  transform: translateY(-3px);
+  background: rgba(255,255,255,.1);
+  border-color: rgba(94,234,212,.45);
+}
+
+.btn:active {
+  transform: translateY(-1px) scale(.985);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.foot {
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  font-size: .85rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.foot strong {
+  font-weight: 700;
+  background: linear-gradient(90deg, #5eead4, #a5b4fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.foot .sep {
+  margin: 0 8px;
+  opacity: .35;
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 34px;
+  transform: translate(-50%, 140%);
+  z-index: 20;
+  padding: 13px 24px;
+  border-radius: 14px;
+  font-size: .88rem;
+  font-weight: 600;
+  color: #04121a;
+  background: linear-gradient(135deg, #5eead4, #a5b4fc);
+  box-shadow: 0 18px 40px -14px rgba(94,234,212,.9);
+  transition: transform .45s cubic-bezier(.2,.9,.25,1);
+  pointer-events: none;
+}
+
+.toast.show {
+  transform: translate(-50%, 0);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 520px) {
+  .card  { border-radius: 24px; }
+  .btn   { flex: 1 1 100%; justify-content: center; }
+  .lock  { width: 78px; height: 78px; margin-bottom: 20px; }
+  .lock svg { width: 32px; height: 32px; }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
+</style>
+
+<script>
+  /* ============================================================
+   DOMAIN TAKEN — by Dipen
+   script.js
+   ============================================================ */
+(function () {
+  'use strict';
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ----------------------------------------------------------
+     1. DOMAIN + EMAIL SETUP
+     ---------------------------------------------------------- */
+  const host  = (location.hostname || '').replace(/^www\./, '') || 'domain.com';
+  const email = 'contact@' + host;
+
+  document.getElementById('domainName').textContent = host;
+  document.getElementById('year').textContent       = new Date().getFullYear();
+
+  const mailBtn = document.getElementById('mailBtn');
+  mailBtn.href =
+    'mailto:' + email +
+    '?subject=' + encodeURIComponent('Inquiry about ' + host) +
+    '&body='    + encodeURIComponent(
+      'Hi Dipen,\n\nI noticed you own ' + host + '.\n\n'
+    );
+
+  /* ----------------------------------------------------------
+     2. COPY EMAIL + TOAST
+     ---------------------------------------------------------- */
+  const copyBtn = document.getElementById('copyBtn');
+  const toast   = document.getElementById('toast');
+  let toastTimer;
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+  }
+
+  copyBtn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(email);
+      showToast('Copied: ' + email);
+    } catch (err) {
+      // Fallback for non-secure contexts / older browsers
+      const ta = document.createElement('textarea');
+      ta.value = email;
+      ta.style.position = 'fixed';
+      ta.style.opacity  = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast('Copied: ' + email);
+      } catch (e) {
+        showToast(email);
+      }
+      document.body.removeChild(ta);
+    }
+  });
+
+  /* ----------------------------------------------------------
+     3. TYPEWRITER EFFECT
+     ---------------------------------------------------------- */
+  const phrases = [
+    'This domain has found its home.',
+    'Registered and maintained by Dipen.',
+    'Not for sale — but you can still say hi.',
+    'Thanks for stopping by.'
+  ];
+
+  const typingEl = document.getElementById('typing');
+  const caret    = document.createElement('span');
+  caret.className = 'caret';
+
+  if (reduceMotion) {
+    typingEl.textContent = phrases[0];
+    typingEl.appendChild(caret);
+  } else {
+    let pIndex   = 0;
+    let cIndex   = 0;
+    let deleting = false;
+
+    (function type() {
+      const full = phrases[pIndex];
+
+      typingEl.textContent = full.slice(0, cIndex);
+      typingEl.appendChild(caret);
+
+      let delay = deleting ? 38 : 68;
+
+      if (!deleting && cIndex === full.length) {
+        delay    = 1800;          // hold the full sentence
+        deleting = true;
+      } else if (deleting && cIndex === 0) {
+        deleting = false;
+        pIndex   = (pIndex + 1) % phrases.length;
+        delay    = 400;
+      } else {
+        cIndex += deleting ? -1 : 1;
+      }
+
+      setTimeout(type, delay);
+    })();
+  }
+
+  /* ----------------------------------------------------------
+     4. PARTICLE NETWORK BACKGROUND
+     ---------------------------------------------------------- */
+  const canvas = document.getElementById('bg');
+  const ctx    = canvas.getContext('2d');
+
+  let w = 0;
+  let h = 0;
+  let dpr = 1;
+  let particles = [];
+
+  const mouse = { x: null, y: null, r: 150 };
+  const LINK_DIST = 130;
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = window.innerWidth;
+    h = window.innerHeight;
+    canvas.width  = Math.floor(w * dpr);
+    canvas.height = Math.floor(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    buildParticles();
+  }
+
+  function buildParticles() {
+    const count = Math.max(
+      28,
+      Math.min(100, Math.floor((w * h) / 16000))
+    );
+
+    particles = Array.from({ length: count }, () => ({
+      x:  Math.random() * w,
+      y:  Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.38,
+      vy: (Math.random() - 0.5) * 0.38,
+      r:  Math.random() * 1.7 + 0.7
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+
+    /* --- move particles --- */
+    for (const p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.x <= 0 || p.x >= w) p.vx *= -1;
+      if (p.y <= 0 || p.y >= h) p.vy *= -1;
+    }
+
+    /* --- links between particles --- */
+    for (let i = 0; i < particles.length; i++) {
+      const a = particles[i];
+
+      for (let j = i + 1; j < particles.length; j++) {
+        const b  = particles[j];
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        const d2 = dx * dx + dy * dy;
+
+        if (d2 < LINK_DIST * LINK_DIST) {
+          const alpha = (1 - Math.sqrt(d2) / LINK_DIST) * 0.3;
+          ctx.strokeStyle = 'rgba(94,234,212,' + alpha.toFixed(3) + ')';
+          ctx.lineWidth   = 1;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    /* --- links to cursor --- */
+    if (mouse.x !== null) {
+      for (const p of particles) {
+        const dx = p.x - mouse.x;
+        const dy = p.y - mouse.y;
+        const d  = Math.hypot(dx, dy);
+
+        if (d < mouse.r) {
+          const f = (1 - d / mouse.r) * 0.4;
+          ctx.strokeStyle = 'rgba(129,140,248,' + f.toFixed(3) + ')';
+          ctx.lineWidth   = 1;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    /* --- dots --- */
+    for (const p of particles) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(170,190,255,.7)';
+      ctx.fill();
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  /* --- events --- */
+  window.addEventListener('resize', resize);
+
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+
+  window.addEventListener('mouseout', () => {
+    mouse.x = null;
+    mouse.y = null;
+  });
+
+  window.addEventListener('touchmove', (e) => {
+    if (e.touches[0]) {
+      mouse.x = e.touches[0].clientX;
+      mouse.y = e.touches[0].clientY;
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchend', () => {
+    mouse.x = null;
+    mouse.y = null;
+  });
+
+  /* --- init --- */
+  resize();
+  if (!reduceMotion) requestAnimationFrame(draw);
+
+})();
+</script>
