@@ -206,6 +206,14 @@
     window.visualViewport.addEventListener('resize', resize, { passive: true });
   }
 
+   document.addEventListener("DOMContentLoaded", () => {
+    const domainName = document.getElementById("domainName");
+
+    if (domainName) {
+        domainName.textContent = window.location.hostname;
+    }
+});
+
   /* ---- init ---- */
   resize();
   if (!reduceMotion) requestAnimationFrame(draw);
