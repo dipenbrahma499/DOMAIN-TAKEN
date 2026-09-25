@@ -219,3 +219,62 @@
   if (!reduceMotion) requestAnimationFrame(draw);
 
 })();
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    // Disable text selection
+    document.addEventListener("selectstart", (event) => {
+        event.preventDefault();
+    });
+
+    // Disable copy
+    document.addEventListener("copy", (event) => {
+        event.preventDefault();
+    });
+
+    // Disable cut
+    document.addEventListener("cut", (event) => {
+        event.preventDefault();
+    });
+
+    // Disable drag
+    document.addEventListener("dragstart", (event) => {
+        event.preventDefault();
+    });
+
+    // Disable right-click
+    document.addEventListener("contextmenu", (event) => {
+        event.preventDefault();
+    });
+
+    // Disable common keyboard shortcuts
+    document.addEventListener("keydown", (event) => {
+
+        // Ctrl/Cmd + C
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "c") {
+            event.preventDefault();
+        }
+
+        // Ctrl/Cmd + X
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "x") {
+            event.preventDefault();
+        }
+
+        // Ctrl/Cmd + A
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "a") {
+            event.preventDefault();
+        }
+
+        // Ctrl/Cmd + S
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
+            event.preventDefault();
+        }
+
+        // Ctrl/Cmd + U
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "u") {
+            event.preventDefault();
+        }
+    });
+
+});
