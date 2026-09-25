@@ -1,0 +1,709 @@
+/* ============================================================
+   RESET
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --bg: #070b18;
+  --accent: #5eead4;
+  --accent2: #818cf8;
+  --text: #e8eeff;
+  --muted: #8b96b8;
+
+  --card-max: 660px;
+  --card-radius: 30px;
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+}
+
+html,
+body {
+  height: 100%;
+  min-height: 100%;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+               Roboto, Inter, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 18% 8%,  #14204a 0%, transparent 55%),
+    radial-gradient(circle at 85% 92%, #2a1a45 0%, transparent 55%),
+    var(--bg);
+
+  /* --- full-flex page shell --- */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: 100svh;
+
+  padding:
+    calc(24px + var(--safe-t))
+    calc(24px + var(--safe-r))
+    calc(24px + var(--safe-b))
+    calc(24px + var(--safe-l));
+
+  overflow: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+}
+
+/* ============================================================
+   BACKGROUND — CANVAS + GLOW ORBS
+   ============================================================ */
+#bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: .35;
+  z-index: 1;
+  pointer-events: none;
+  animation: float 14s ease-in-out infinite;
+}
+
+.orb.a { width: 340px; height: 340px; background: #2563eb; top: -90px; left: -90px; }
+.orb.b { width: 300px; height: 300px; background: #7c3aed; bottom: -100px; right: -80px; animation-delay: -6s; }
+.orb.c { width: 220px; height: 220px; background: #0d9488; top: 45%; left: 65%; animation-delay: -3s; opacity: .22; }
+
+@keyframes float {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(30px, -40px, 0) scale(1.12); }
+}
+
+/* ============================================================
+   GLASS CARD — FLEX COLUMN
+   ============================================================ */
+.card {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+
+  width: 100%;
+  max-width: var(--card-max);
+  max-height: 100%;
+  overflow-y: auto;
+
+  padding: clamp(24px, 4.5vw, 54px) clamp(20px, 4vw, 48px);
+
+  text-align: center;
+  border-radius: var(--card-radius);
+  background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.1);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  box-shadow:
+    0 40px 90px -30px rgba(0,0,0,.9),
+    0 0 0 1px rgba(255,255,255,.03) inset,
+    0 1px 0 rgba(255,255,255,.09) inset;
+
+  animation: rise .9s cubic-bezier(.2,.85,.25,1) both;
+  scrollbar-width: none;
+}
+
+.card::-webkit-scrollbar { display: none; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(26px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);   }
+}
+
+/* ============================================================
+   LOCK BADGE
+   ============================================================ */
+.lock {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+
+  width: 92px;
+  height: 92px;
+  margin-bottom: 26px;
+
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(94,234,212,.18), rgba(129,140,248,.18));
+  border: 1px solid rgba(94,234,212,.35);
+  box-shadow:
+    0 0 40px -6px rgba(94,234,212,.45),
+    inset 0 0 22px rgba(129,140,248,.2);
+}
+
+.lock svg {
+  width: 38px;
+  height: 38px;
+  stroke: var(--accent);
+  filter: drop-shadow(0 0 8px rgba(94,234,212,.7));
+}
+
+.ring {
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  border: 1px solid rgba(94,234,212,.55);
+  animation: pulse 3s ease-out infinite;
+}
+
+.ring.r2 {
+  animation-delay: 1.5s;
+  border-color: rgba(129,140,248,.5);
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1);    opacity: .8; }
+  100% { transform: scale(1.85); opacity: 0;  }
+}
+
+/* ============================================================
+   TEXT
+   ============================================================ */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: .72rem;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 7px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(94,234,212,.3);
+  background: rgba(94,234,212,.07);
+  margin-bottom: 22px;
+  white-space: nowrap;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 6.5vw, 3.4rem);
+  line-height: 1.08;
+  letter-spacing: -.03em;
+  font-weight: 800;
+  background: linear-gradient(100deg, #ffffff 10%, #a5f3ec 45%, #a5b4fc 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 16px;
+  max-width: 100%;
+}
+
+.domain {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: clamp(.78rem, 2.6vw, 1.05rem);
+  color: #cfe0ff;
+  padding: 11px 20px;
+  border-radius: 14px;
+  background: rgba(8,14,32,.65);
+  border: 1px solid rgba(129,140,248,.28);
+  box-shadow: 0 0 26px -8px rgba(129,140,248,.6) inset;
+  margin-bottom: 24px;
+  max-width: 100%;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+.dot {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 10px #34d399;
+  animation: blink 1.8s ease-in-out infinite;
+}
+
+@keyframes blink {
+  50% { opacity: .25; }
+}
+
+.typing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  min-height: 1.7em;
+  font-size: clamp(.9rem, 2.8vw, 1.1rem);
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 34px;
+  max-width: 100%;
+}
+
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  background: var(--accent);
+  vertical-align: -.18em;
+  margin-left: 3px;
+  animation: caret .9s steps(1) infinite;
+}
+
+@keyframes caret {
+  50% { opacity: 0; }
+}
+
+/* ============================================================
+   BUTTONS — FLEX ROW, WRAPS ON SMALL SCREENS
+   ============================================================ */
+.actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  margin-bottom: 34px;
+}
+
+.btn {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  font: inherit;
+  font-weight: 600;
+  font-size: .94rem;
+  padding: 14px 28px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  min-height: 48px;
+
+  transition:
+    transform .22s cubic-bezier(.2,.8,.2,1),
+    box-shadow .22s,
+    background .22s,
+    border-color .22s;
+}
+
+.btn svg {
+  flex: 0 0 auto;
+  width: 17px;
+  height: 17px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.btn span { display: inline-block; }
+
+.btn.primary {
+  color: #04121a;
+  background: linear-gradient(135deg, #5eead4, #7dd3fc 55%, #a5b4fc);
+  box-shadow: 0 14px 34px -12px rgba(94,234,212,.85);
+}
+
+.btn.primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 42px -12px rgba(94,234,212,1);
+}
+
+.btn.ghost {
+  color: var(--text);
+  background: rgba(255,255,255,.05);
+  border-color: rgba(255,255,255,.14);
+}
+
+.btn.ghost:hover {
+  transform: translateY(-3px);
+  background: rgba(255,255,255,.1);
+  border-color: rgba(94,234,212,.45);
+}
+
+.btn:active {
+  transform: translateY(-1px) scale(.985);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   FOOTER — FLEX ROW, WRAPS
+   ============================================================ */
+.foot {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 0;
+  width: 100%;
+
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  font-size: .85rem;
+  color: var(--muted);
+  line-height: 1.8;
+  text-align: center;
+}
+
+.foot-line { display: inline-flex; align-items: center; gap: 4px; }
+
+.foot strong {
+  font-weight: 700;
+  background: linear-gradient(90deg, #5eead4, #a5b4fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.foot-sep {
+  margin: 0 8px;
+  opacity: .35;
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(34px + var(--safe-b));
+  transform: translate(-50%, 140%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  max-width: calc(100vw - 40px);
+  padding: 13px 24px;
+  border-radius: 14px;
+  font-size: .88rem;
+  font-weight: 600;
+  text-align: center;
+  color: #04121a;
+  background: linear-gradient(135deg, #5eead4, #a5b4fc);
+  box-shadow: 0 18px 40px -14px rgba(94,234,212,.9);
+  transition: transform .45s cubic-bezier(.2,.9,.25,1);
+  pointer-events: none;
+  word-break: break-word;
+}
+
+.toast.show { transform: translate(-50%, 0); }
+
+/* ============================================================
+   RESPONSIVE — ALL SCREEN TYPES
+   ============================================================ */
+
+/* ---------- Tiny phones (Galaxy Fold outer, 280-320px) ---------- */
+@media (max-width: 360px) {
+  body { padding: 14px; }
+
+  .card {
+    padding: 22px 16px;
+    border-radius: 22px;
+    gap: 0;
+  }
+
+  .lock {
+    width: 68px;
+    height: 68px;
+    margin-bottom: 16px;
+  }
+  .lock svg { width: 28px; height: 28px; }
+
+  .eyebrow {
+    font-size: .62rem;
+    letter-spacing: .22em;
+    padding: 6px 12px;
+    margin-bottom: 16px;
+  }
+
+  h1 { font-size: 1.55rem; margin-bottom: 12px; }
+
+  .domain {
+    font-size: .72rem;
+    padding: 9px 14px;
+    margin-bottom: 18px;
+  }
+
+  .typing {
+    font-size: .82rem;
+    margin-bottom: 24px;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 12px 18px;
+    font-size: .86rem;
+  }
+
+  .foot { font-size: .72rem; padding-top: 18px; }
+}
+
+/* ---------- Small phones (portrait) ---------- */
+@media (min-width: 361px) and (max-width: 520px) {
+  .card {
+    border-radius: 24px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .lock {
+    width: 78px;
+    height: 78px;
+    margin-bottom: 20px;
+  }
+  .lock svg { width: 32px; height: 32px; }
+}
+
+/* ---------- Medium phones (large portrait) ---------- */
+@media (min-width: 521px) and (max-width: 767px) {
+  .actions { flex-direction: row; }
+  .btn     { flex: 1 1 auto; min-width: 0; }
+}
+
+/* ---------- Tablets (portrait) ---------- */
+@media (min-width: 768px) and (max-width: 1023px) {
+  :root { --card-max: 640px; }
+}
+
+/* ---------- Tablets landscape / small laptops ---------- */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  :root { --card-max: 680px; }
+}
+
+/* ---------- Desktops ---------- */
+@media (min-width: 1280px) {
+  :root { --card-max: 700px; }
+}
+
+/* ---------- Ultrawide monitors ---------- */
+@media (min-width: 1920px) {
+  :root {
+    --card-max: 760px;
+    --card-radius: 34px;
+  }
+
+  .lock { width: 104px; height: 104px; }
+  .lock svg { width: 42px; height: 42px; }
+}
+
+/* ---------- 4K / 8K / TV displays ---------- */
+@media (min-width: 2560px) {
+  :root { --card-max: 900px; }
+
+  body { font-size: 1.15rem; }
+
+  .lock { width: 124px; height: 124px; }
+  .lock svg { width: 50px; height: 50px; }
+
+  .btn { font-size: 1.05rem; padding: 18px 34px; }
+}
+
+/* ============================================================
+   LANDSCAPE PHONES — compact vertical layout
+   ============================================================ */
+@media (orientation: landscape) and (max-height: 500px) {
+  body {
+    padding: 12px calc(24px + var(--safe-r))
+             12px calc(24px + var(--safe-l));
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow-y: auto;
+  }
+
+  .card {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 18px 28px;
+    max-width: 100%;
+    padding: 18px 26px;
+    border-radius: 22px;
+    text-align: left;
+  }
+
+  .lock {
+    width: 62px;
+    height: 62px;
+    margin: 0;
+    order: 1;
+  }
+  .lock svg { width: 26px; height: 26px; }
+
+  .eyebrow {
+    order: 2;
+    margin: 0;
+    font-size: .6rem;
+    padding: 5px 11px;
+  }
+
+  h1 {
+    order: 3;
+    font-size: 1.35rem;
+    margin: 0;
+    flex: 1 1 100%;
+  }
+
+  .domain {
+    order: 4;
+    margin: 0;
+    font-size: .72rem;
+    padding: 8px 14px;
+  }
+
+  .typing {
+    order: 5;
+    margin: 0;
+    font-size: .8rem;
+    min-height: 1.4em;
+  }
+
+  .actions {
+    order: 6;
+    margin: 0;
+    gap: 10px;
+    width: auto;
+  }
+
+  .btn {
+    padding: 10px 18px;
+    font-size: .82rem;
+    min-height: 40px;
+  }
+
+  .foot {
+    order: 7;
+    flex: 1 1 100%;
+    padding-top: 14px;
+    margin-top: 6px;
+    font-size: .72rem;
+  }
+}
+
+/* ============================================================
+   VERY SHORT SCREENS (any orientation)
+   ============================================================ */
+@media (max-height: 560px) and (orientation: portrait) {
+  .card {
+    padding: 20px 22px;
+    gap: 0;
+  }
+
+  .lock { width: 62px; height: 62px; margin-bottom: 14px; }
+  .lock svg { width: 26px; height: 26px; }
+
+  .eyebrow { margin-bottom: 12px; font-size: .62rem; }
+  h1       { font-size: 1.6rem; margin-bottom: 10px; }
+  .domain  { margin-bottom: 14px; font-size: .76rem; padding: 8px 14px; }
+  .typing  { margin-bottom: 18px; font-size: .84rem; }
+  .actions { margin-bottom: 18px; gap: 10px; }
+  .btn     { padding: 11px 18px; font-size: .86rem; }
+  .foot    { padding-top: 14px; font-size: .72rem; }
+}
+
+/* ============================================================
+   FOLDABLE — unfolded / dual-screen
+   ============================================================ */
+@media (min-width: 540px) and (max-width: 720px) and (orientation: landscape) {
+  .card {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px 32px;
+  }
+
+  .lock { margin: 0 auto 18px; }
+  .eyebrow { margin-bottom: 16px; }
+  h1 { font-size: 1.8rem; }
+  .actions { flex-direction: row; }
+}
+
+/* ============================================================
+   HOVER-CAPABLE DEVICES ONLY (avoid sticky hover on touch)
+   ============================================================ */
+@media (hover: none) {
+  .btn.primary:hover { transform: none; box-shadow: 0 14px 34px -12px rgba(94,234,212,.85); }
+  .btn.ghost:hover   { transform: none; background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   HIGH CONTRAST / FORCED COLORS
+   ============================================================ */
+@media (forced-colors: active) {
+  .card,
+  .btn,
+  .domain,
+  .eyebrow {
+    border: 1px solid CanvasText;
+  }
+}
