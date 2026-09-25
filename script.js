@@ -7,22 +7,8 @@
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ----------------------------------------------------------
-     1. DOMAIN + EMAIL SETUP
-     ---------------------------------------------------------- */
-  const host  = (location.hostname || '').replace(/^www\./, '') || 'domain.com';
-  const email = 'contact@' + host;
-
-  document.getElementById('domainName').textContent = host;
-  document.getElementById('year').textContent       = new Date().getFullYear();
-
-  const mailBtn = document.getElementById('mailBtn');
-  mailBtn.href =
-    'mailto:' + email +
-    '?subject=' + encodeURIComponent('Inquiry about ' + host) +
-    '&body='    + encodeURIComponent(
-      'Hi Dipen,\n\nI noticed you own ' + host + '.\n\n'
-    );
+ 
+ 
 
   /* ----------------------------------------------------------
      2. TYPEWRITER EFFECT
