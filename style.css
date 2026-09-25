@@ -707,3 +707,15 @@ h1 {
     border: 1px solid CanvasText;
   }
 }
+
+.contact-owner {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.contact-owner:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
