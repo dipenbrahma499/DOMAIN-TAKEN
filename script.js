@@ -10,14 +10,22 @@
   /* ----------------------------------------------------------
      1. DOMAIN + EMAIL SETUP
      ---------------------------------------------------------- */
+  const host  = (location.hostname || '').replace(/^www\./, '') || 'domain.com';
+  const email = 'contact@' + host;
+
+  document.getElementById('domainName').textContent = host;
+  document.getElementById('year').textContent       = new Date().getFullYear();
+
+  const mailBtn = document.getElementById('mailBtn');
+  mailBtn.href =
+    'mailto:' + email +
+    '?subject=' + encodeURIComponent('Inquiry about ' + host) +
+    '&body='    + encodeURIComponent(
+      'Hi Dipen,\n\nI noticed you own ' + host + '.\n\n'
+    );
 
   /* ----------------------------------------------------------
-     2. COPY EMAIL + TOAST
-     ---------------------------------------------------------- */
- 
-
-  /* ----------------------------------------------------------
-     3. TYPEWRITER EFFECT
+     2. TYPEWRITER EFFECT
      ---------------------------------------------------------- */
   const phrases = [
     'This domain has found its home.',
@@ -62,7 +70,7 @@
   }
 
   /* ----------------------------------------------------------
-     4. PARTICLE NETWORK BACKGROUND
+     3. PARTICLE NETWORK BACKGROUND
      ---------------------------------------------------------- */
   const canvas = document.getElementById('bg');
   const ctx    = canvas.getContext('2d');
@@ -78,7 +86,6 @@
   function resize() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    /* Use visualViewport on mobile for accurate sizing */
     const vw = window.visualViewport ? window.visualViewport.width  : window.innerWidth;
     const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
 
@@ -95,7 +102,6 @@
   }
 
   function buildParticles() {
-    /* Adaptive count — keeps things smooth on any screen size */
     const base     = (w * h) / 16000;
     const minCount = w < 400 ? 18 : 28;
     const maxCount = w > 2000 ? 140 : 100;
@@ -171,7 +177,7 @@
     requestAnimationFrame(draw);
   }
 
-  /* ---- pointer events (unified mouse + touch + pen) ---- */
+  /* ---- pointer events ---- */
   if (window.PointerEvent) {
     window.addEventListener('pointermove', (e) => {
       mouse.x = e.clientX;
